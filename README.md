@@ -64,8 +64,8 @@ All models evaluated on an identical stratified 80/20 train/test split (test set
 | **PWM (0th-order, full window)** | **86.1%** | **0.731** | **0.704** | **0.717** |
 | MaxEnt-like (1st-order Markov/WAM) | 81.5% | 0.684 | 0.481 | 0.565 |
 
-See `figures/final_comparison.png` for the corresponding plot and
-`results/final_comparison.csv` for the raw numbers.
+See `final_comparison.png` for the corresponding plot and
+`final_comparison.csv` for the raw numbers.
 
 ![Final comparison](final_comparison.png)
 

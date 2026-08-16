@@ -67,7 +67,7 @@ All models evaluated on an identical stratified 80/20 train/test split (test set
 See `figures/final_comparison.png` for the corresponding plot and
 `results/final_comparison.csv` for the raw numbers.
 
-![Final comparison](figures/final_comparison.png)
+![Final comparison](final_comparison.png)
 
 ### Qubit-count ablation (2 / 4 / 6 / 8 qubits)
 
@@ -83,8 +83,8 @@ an identical, class-balanced 100-sample training subset and evaluated on the sam
 | 6 (truncated) | 2 | 24 | 44.4% | 0.280 | 0.778 | 0.412 | 16.4s |
 | 8 (truncated) | 2 | 32 | 49.1% | 0.267 | 0.593 | 0.368 | 145.4s |
 
-![Qubit ablation comparison](figures/qubit_ablation_comparison.png)
-![Qubit ablation loss curves](figures/qubit_ablation_loss_curves.png)
+![Qubit ablation comparison](qubit_ablation_comparison.png)
+![Qubit ablation loss curves](qubit_ablation_loss_curves.png)
 
 F1 does not increase monotonically with qubit count — 6 qubits gives the best
 F1/training-time trade-off, and 8 qubits is ~9x slower than 6 for a *lower* F1.
@@ -104,7 +104,7 @@ matched feature count:
 | 6 | 0.000 | 0.289 | 0.371 | 0.412 |
 | 8 | 0.000 | 0.296 | 0.320 | 0.368 |
 
-![Full comparison by qubit](figures/full_comparison_by_qubit.png)
+![Full comparison by qubit](full_comparison_by_qubit.png)
 
  The 2-feature MLP result is degenerate (100% recall, 25% accuracy — it predicts
 "positive" for every sample) and should not be read as genuine skill. Excluding
@@ -125,7 +125,7 @@ apparent advantage holds up:
 | **MLP** | **0.391 ± 0.013** |
 | QNN | 0.337 ± 0.060 |
 
-![Cross-validation boxplot](figures/cross_validation_6qubit_boxplot.png)
+![Cross-validation boxplot](cross_validation_6qubit_boxplot.png)
 
 Under cross-validation, QNN's fold-to-fold standard deviation (0.060) is larger
 than its mean gap to MLP (0.054) — so the single-split "QNN wins" result above did
@@ -144,7 +144,7 @@ kept in its original, imbalanced form):
 | SMOTE | 0.388 | 0.395 | 0.341 |
 | Random Undersampling | 0.409 | 0.433 | 0.418 |
 
-![Balancing experiments comparison](figures/balancing_experiments_comparison.png)
+![Balancing experiments comparison](balancing_experiments_comparison.png)
 
 Balancing is critical for SVM/MLP (both are near-useless without it: SVM collapses
 to predicting the majority class every time) but far less important for the QNN,

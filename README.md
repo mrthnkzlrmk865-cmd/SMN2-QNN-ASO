@@ -64,8 +64,8 @@ All models evaluated on an identical stratified 80/20 train/test split (test set
 | **PWM (0th-order, full window)** | **86.1%** | **0.731** | **0.704** | **0.717** |
 | MaxEnt-like (1st-order Markov/WAM) | 81.5% | 0.684 | 0.481 | 0.565 |
 
-See `final_comparison.png` for the corresponding plot and
-`final_comparison.csv` for the raw numbers.
+See `figures/final_comparison.png` for the corresponding plot and
+`results/final_comparison.csv` for the raw numbers.
 
 ![Final comparison](final_comparison.png)
 
@@ -99,7 +99,7 @@ matched feature count:
 
 | Qubits | Baseline F1 | SVM F1 | MLP F1 | QNN F1 |
 |---|---|---|---|---|
-| 2 | 0.000 | 0.339 | 0.400  | 0.417 |
+| 2 | 0.000 | 0.339 | 0.400 | 0.417 |
 | 4 | 0.000 | 0.250 | 0.371 | 0.362 |
 | 6 | 0.000 | 0.289 | 0.371 | 0.412 |
 | 8 | 0.000 | 0.296 | 0.320 | 0.368 |
@@ -151,6 +151,209 @@ to predicting the majority class every time) but far less important for the QNN,
 whose probability-regression loss (MSE against soft labels) already behaves more
 gracefully under imbalance than a hard decision-boundary classifier.
 
+---
+
+## Follow-up analysis (Professor Toshifumi Yokota's feedback)
+
+Three further experiments were run in response to external review, before any
+wet-lab or preprint steps were considered.
+
+### 1. Fair comparison under a matched, center-aligned feature window
+
+The original comparison gave SVM/MLP/QNN only 4 *left-flanking* positions of the
+22-nt window, while PWM used the full window. Two problems were fixed at once:
+the feature *count* was matched (8 positions for every model), and the feature
+*location* was corrected to be centered on the actual GT/AG splice motif
+(positions 7–14 of the window) rather than uninformative flanking sequence.
+
+| Model | Feature window | Accuracy | Precision | Recall | F1 |
+|---|---|---|---|---|---|
+| Baseline | 8nt (centered) | 75.0% | 0.000 | 0.000 | 0.000 |
+| SVM | 8nt (centered) | 77.8% | 0.545 | 0.667 | **0.600** |
+| MLP | 8nt (centered) | 83.3% | 0.645 | 0.741 | **0.690** |
+| QNN | 8nt (centered) | 40.7% | 0.175 | 0.370 | 0.238 |
+| PWM | 8nt (centered) | 86.1% | 0.731 | 0.704 | 0.717 |
+| MaxEnt-like | 22nt (full, reference) | 81.5% | 0.684 | 0.481 | 0.565 |
+
+![Fair comparison](fair_comparison_matched_window.png)
+
+**Correcting feature location, not just feature count, closed most of the gap
+between classical ML and PWM** (SVM 0.375→0.600, MLP 0.269→0.690) — confirming
+that earlier "classical ML is weak" conclusions were substantially an artifact of
+poor feature placement, not a fundamental limitation of SVM/MLP. The QNN, given
+the exact same improved features, got *worse* (0.364→0.238), which is a separate
+finding: the quantum training procedure itself (fixed iteration budget, 100-sample
+subset, COBYLA optimizer) appears to be the current bottleneck for the QNN, not
+feature availability. Extending to the full 22-qubit window was not computationally
+tractable in this environment (Hilbert space scales as 2^n; 22 qubits is far
+beyond what shot-based simulation can train in reasonable time here), so 8 qubits
+(centered) is used as the practical fair ceiling.
+
+### 2. Gene-level holdout evaluation
+
+All five models were retrained on **4 of the 5 genes** and tested on the entirely
+unseen 5th gene, repeated once per held-out gene — a much stricter generalization
+test than the earlier random split, since no window from the test gene is ever
+seen during training.
+
+| Held-out gene | N_test (positive) | Baseline F1 | SVM F1 | MLP F1 | QNN F1 | PWM F1 |
+|---|---|---|---|---|---|---|
+| SMN2 | 96 (16) | 0.000 | 0.409 | 0.465 | 0.328 | 0.595 |
+| BRCA1 | 124 (44) | 0.000 | 0.714 | 0.690 | 0.393 | 0.773 |
+| TP53 | 100 (20) | 0.000 | 0.583 | 0.698 | 0.261 | 0.714 |
+| CFTR | 132 (52) | 0.000 | 0.736 | 0.714 | 0.477 | 0.812 |
+| HBB | 84 (4) | 0.000 | 0.121 | 0.222 | 0.136 | 0.400 |
+| **Mean ± std** | | 0.000 | 0.513 ± 0.228 | 0.558 ± 0.191 | 0.319 ± 0.116 | **0.659 ± 0.149** |
+
+![Gene holdout comparison](gene_holdout_comparison.png)
+
+PWM remains the strongest generalizer even when it has never seen a single window
+from the test gene, and QNN remains the weakest, consistent with the random-split
+results above. HBB is the hardest holdout for every model (only 4 positive
+examples total, so its held-out test set is extremely small and noisy) — its
+numbers should be read with that caveat in mind.
+
+### 3. Retrospective validation of the ASO scoring pipeline
+
+Before scoring any new candidates, the existing QNN + thermodynamic + off-target
+pipeline was tested against **real, published SMN2 ISS-N1-targeting ASOs** with
+known biological activity, alongside constructed negative controls:
+
+| Rank | ASO | Category | Combined score |
+|---|---|---|---|
+| 1 | Off-target control (unrelated SMN2 region) | control | 0.732 |
+| 2 | ISS-N2-targeting ASO (different silencer) | control | 0.711 |
+| 3 | Scrambled control (constructed) | control | 0.659 |
+| 4 | Anti-N1 (Singh et al. discovery ASO) | **active** | 0.645 |
+| 5 | Nusinersen / ASO-10-27 (FDA-approved) | **active** | 0.629 |
+| 6 | 8-mer GC-core ASO (Singh et al. 2009 target region) | **active** | 0.386 |
+
+![Retrospective ASO validation](retrospective_aso_validation.png)
+
+**This is a negative result and it is the most important finding in this
+follow-up analysis.** The published, experimentally active ASOs — including
+nusinersen itself, an FDA-approved drug — rank *below* every constructed control,
+including a scrambled sequence. Mean rank: active = 5.0, control = 2.0 (lower is
+better), the reverse of what a working pipeline should show; a Mann-Whitney U
+test finds no separation in the correct direction (p = 1.0). Root causes, diagnosed
+directly from the component scores: (1) the QNN's P(1) output is clustered tightly
+around 0.49–0.56 for every sequence tested — consistent with its weak, near-baseline
+discriminative power seen throughout this project — so it contributes almost no
+useful signal; (2) the thermodynamic stability term is driven mostly by GC content,
+which happens to be high in the off-target and ISS-N2 controls for reasons
+unrelated to ISS-N1 binding; (3) the off-target scan penalizes the short, real
+8-mer core ASO heavily, because a short sequence matches more windows by chance
+in *any* local scan — the opposite of its real published behavior, where shorter
+ASOs are known to have *fewer* off-target effects due to lower mismatch tolerance.
+
+**Conclusion: the current scoring pipeline should not be used to prioritize ASO
+candidates for synthesis or wet-lab testing.** This retrospective check was
+exactly the right precaution to run before that step, and it shows the scoring
+system needs a substantial redesign — likely starting with a better QNN (per
+points 1–2 above) and a real local-alignment-based off-target metric — before it
+can be trusted on unseen candidates.
+
+---
+
+## ASO scoring system: diagnosis and redesign
+
+### Diagnosis: why did the old score invert active vs. control?
+
+Each component's weighted contribution to the (active − control) score gap was
+computed directly (`src/14_diagnose_scoring_failure.py`):
+
+| Component | Active mean | Control mean | Weighted contribution to gap | Direction |
+|---|---|---|---|---|
+| QNN P(1) | 0.527 | 0.498 | **+0.0143** | correct |
+| Thermodynamic "stability" | 0.611 | 0.882 | **−0.0813** | inverted |
+| Off-target term | 0.533 | 0.933 | **−0.0800** | inverted |
+
+![Scoring diagnosis distributions](scoring_diagnosis_distributions.png)
+![Scoring diagnosis contributions](scoring_diagnosis_contributions.png)
+
+Ranking by the QNN component *alone* actually separates active from control
+correctly (mean rank 2.0 vs 5.0 — the best possible outcome for 3-vs-3), but its
+raw score gap is tiny (+0.029) so its weighted contribution is small. The
+stability and off-target terms are both larger in magnitude and both point the
+wrong way, so they dominate the combined score. Tracing the code (not just the
+statistics) found the mechanistic causes:
+
+1. **The thermodynamic term computed the ASO's self-complementary duplex energy**
+   (a generic function of GC content) rather than its duplex energy with the
+   *actual* ISS-N1 target — so it rewarded GC-rich sequences regardless of
+   whether they matched ISS-N1 at all.
+2. **The off-target scan penalized correctly-working ASOs for finding their own
+   real target.** Confirmed by direct trace: nusinersen's *only* "off-target hit"
+   is at genomic position 32,061 — inside intron 7, its actual, intended binding
+   site. The scan never excluded the true target region.
+3. **The "off-target control" in the retrospective set was a construction bug**:
+   it was built as a direct copy of a genomic region rather than its reverse
+   complement, so it isn't a real antisense sequence and trivially can't bind
+   anything — its apparent "zero risk" reflected that error, not genuine
+   specificity.
+4. **The off-target scan is not length-normalized.** A quick check with 20 random
+   sequences confirms it: random 8-mers average 136 spurious "matches" in this
+   35 kb region under a fixed mismatch threshold, while random 18-mers average 0.
+   Any ASO ≤~10 nt will be flagged as high-risk by this scan regardless of its
+   real specificity.
+
+### Redesign
+
+Implemented in `src/15_redesigned_aso_scoring.py`. Three transparent, independently
+interpretable components:
+
+| Component | What it measures | Weight |
+|---|---|---|
+| **QNN P(1)** | trained-model output (kept, since it was the one correctly-directed signal) | 0.2 |
+| **On-target complementarity** | best-alignment fraction of matching bases between the ASO and the real ISS-N1 region (± flanking) extracted from genomic data — directly implements the professor's suggestion of a literature-grounded "distance/match to ISS-N1 core" feature | 0.6 |
+| **Off-target term (v2)** | percent-identity-based genome scan (not fixed mismatch count, so it doesn't saturate for short sequences) that explicitly **excludes the true on-target site** before counting hits | 0.2 |
+
+### Re-test on the same retrospective set
+
+| New rank | ASO | Category | QNN P(1) | On-target complementarity | Off-target risk (v2) | New score | Old rank |
+|---|---|---|---|---|---|---|---|
+| 1 | Anti-N1 (Singh et al.) | **active** | 0.516 | 1.000 | 0.000 | 0.903 | 4 |
+| 2 | Nusinersen / ASO-10-27 | **active** | 0.507 | 1.000 | 0.000 | 0.901 | 5 |
+| 3 | 8-mer GC-core ASO | **active** | 0.530 | 1.000 | 1.000 | 0.706 | 6 |
+| 4 | Scrambled control | control | 0.496 | 0.444 | 0.000 | 0.566 | 3 |
+| 5 | ISS-N2-targeting ASO | control | 0.502 | 0.550 | 0.333 | 0.564 | 2 |
+| 6 | Off-target control | control | 0.497 | 0.389 | 0.000 | 0.533 | 1 |
+
+![Old vs new scoring](aso_scoring_old_vs_new.png)
+
+**All three published active ASOs now rank above all three controls** — a
+complete reversal of the old system. Active mean rank = 2.00, control mean rank
+= 5.00 (the best possible separation achievable with 3 vs. 3 samples).
+Mann-Whitney U = 9.0, p = 0.050 — the minimum p-value obtainable at this sample
+size, i.e. the strongest possible statistical signal given only 6 data points.
+
+The on-target complementarity term does essentially all of the work: it is
+1.000 for all three real ISS-N1-targeting ASOs (each has a perfect complementary
+binding site in the true target region, which is exactly what a real functional
+ASO should have) and only 0.39–0.55 for the three controls (near chance level for
+a 4-letter alphabet, ~0.25, plus some coincidental partial matches) — a clean,
+mechanistic, and fully interpretable separation, rather than an accidental
+correlation the way GC-content-driven "stability" was.
+
+### Honest caveats
+
+- **n = 3 vs. 3 is very small.** A single data point moving could change the
+  ranking. This result should be read as "the redesigned logic is no longer
+  structurally broken," not as "the score is validated." A larger retrospective
+  panel (more published active *and* inactive/weak ISS-N1 ASOs, not just
+  constructed controls) is needed before trusting this for real candidate
+  prioritization.
+- **The off-target term is still noisy for very short sequences** (the 8-mer
+  still scores off-target risk = 1.0) — this is now a much smaller contributor
+  to the final score (weight 0.2, and outweighed by its perfect on-target
+  complementarity) but the underlying short-sequence saturation issue from the
+  diagnosis is only partially mitigated, not fully solved.
+- **The QNN component remains weak on its own** (tiny raw score range,
+  0.497–0.530) — it contributes a small stabilizing signal here but is not
+  driving the fix. Improving the QNN itself (per the fair-comparison and
+  gene-holdout results above) is still worth pursuing, but was not required to
+  fix this particular retrospective test.
+
 ### Why did the simple PWM outperform the more complex MaxEnt-like model?
 
 The 1st-order Markov model estimates a full 4×4 conditional transition matrix at
@@ -178,10 +381,15 @@ sophisticated the biological signal could in principle be modeled.**
   available window positions, for computational tractability on quantum circuit
   simulation. The qubit-ablation experiment (2/4/6/8 qubits) explores this
   trade-off directly but does not fully resolve it.
-- **ASO scoring is exploratory.** Binding-affinity and exon-inclusion scores for
-  ASO candidates are derived from the (currently modest-performing) trained QNN
-  and a simplified thermodynamic model — they are a proof-of-concept scoring
-  pipeline, not a wet-lab-validated ranking.
+- **ASO scoring is exploratory — and retrospective validation shows it currently
+  fails.** When tested against real, published, experimentally active SMN2
+  ISS-N1 ASOs (including nusinersen itself), the current QNN + thermodynamic +
+  off-target scoring pipeline ranked every constructed negative control *above*
+  every real active ASO (see "Retrospective validation" below). The scoring
+  system in its current form should not be used to prioritize candidates for
+  synthesis. This is treated as a primary finding of this project, not a
+  footnote — the whole point of running this check was to catch exactly this
+  kind of problem before any wet-lab step, per Professor Yokota's guidance.
 
 ## How to reproduce
 

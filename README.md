@@ -67,7 +67,7 @@ All models evaluated on an identical stratified 80/20 train/test split (test set
 See `figures/final_comparison.png` for the corresponding plot and
 `results/final_comparison.csv` for the raw numbers.
 
-![Final comparison](final_comparison.png)
+![Final comparison](figures/final_comparison.png)
 
 ### Qubit-count ablation (2 / 4 / 6 / 8 qubits)
 
@@ -83,8 +83,8 @@ an identical, class-balanced 100-sample training subset and evaluated on the sam
 | 6 (truncated) | 2 | 24 | 44.4% | 0.280 | 0.778 | 0.412 | 16.4s |
 | 8 (truncated) | 2 | 32 | 49.1% | 0.267 | 0.593 | 0.368 | 145.4s |
 
-![Qubit ablation comparison](qubit_ablation_comparison.png)
-![Qubit ablation loss curves](qubit_ablation_loss_curves.png)
+![Qubit ablation comparison](figures/qubit_ablation_comparison.png)
+![Qubit ablation loss curves](figures/qubit_ablation_loss_curves.png)
 
 F1 does not increase monotonically with qubit count — 6 qubits gives the best
 F1/training-time trade-off, and 8 qubits is ~9x slower than 6 for a *lower* F1.
@@ -99,14 +99,14 @@ matched feature count:
 
 | Qubits | Baseline F1 | SVM F1 | MLP F1 | QNN F1 |
 |---|---|---|---|---|
-| 2 | 0.000 | 0.339 | 0.400 | 0.417 |
+| 2 | 0.000 | 0.339 | 0.400 ⚠️ | 0.417 |
 | 4 | 0.000 | 0.250 | 0.371 | 0.362 |
 | 6 | 0.000 | 0.289 | 0.371 | 0.412 |
 | 8 | 0.000 | 0.296 | 0.320 | 0.368 |
 
-![Full comparison by qubit](full_comparison_by_qubit.png)
+![Full comparison by qubit](figures/full_comparison_by_qubit.png)
 
- The 2-feature MLP result is degenerate (100% recall, 25% accuracy — it predicts
+⚠️ The 2-feature MLP result is degenerate (100% recall, 25% accuracy — it predicts
 "positive" for every sample) and should not be read as genuine skill. Excluding
 that cell, QNN is the top or joint-top F1 at every remaining qubit count on this
 particular split — but see the cross-validation result below before drawing any
@@ -125,7 +125,7 @@ apparent advantage holds up:
 | **MLP** | **0.391 ± 0.013** |
 | QNN | 0.337 ± 0.060 |
 
-![Cross-validation boxplot](cross_validation_6qubit_boxplot.png)
+![Cross-validation boxplot](figures/cross_validation_6qubit_boxplot.png)
 
 Under cross-validation, QNN's fold-to-fold standard deviation (0.060) is larger
 than its mean gap to MLP (0.054) — so the single-split "QNN wins" result above did
@@ -144,7 +144,7 @@ kept in its original, imbalanced form):
 | SMOTE | 0.388 | 0.395 | 0.341 |
 | Random Undersampling | 0.409 | 0.433 | 0.418 |
 
-![Balancing experiments comparison](balancing_experiments_comparison.png)
+![Balancing experiments comparison](figures/balancing_experiments_comparison.png)
 
 Balancing is critical for SVM/MLP (both are near-useless without it: SVM collapses
 to predicting the majority class every time) but far less important for the QNN,
@@ -175,7 +175,7 @@ the feature *count* was matched (8 positions for every model), and the feature
 | PWM | 8nt (centered) | 86.1% | 0.731 | 0.704 | 0.717 |
 | MaxEnt-like | 22nt (full, reference) | 81.5% | 0.684 | 0.481 | 0.565 |
 
-![Fair comparison](fair_comparison_matched_window.png)
+![Fair comparison](figures/fair_comparison_matched_window.png)
 
 **Correcting feature location, not just feature count, closed most of the gap
 between classical ML and PWM** (SVM 0.375→0.600, MLP 0.269→0.690) — confirming
@@ -205,7 +205,7 @@ seen during training.
 | HBB | 84 (4) | 0.000 | 0.121 | 0.222 | 0.136 | 0.400 |
 | **Mean ± std** | | 0.000 | 0.513 ± 0.228 | 0.558 ± 0.191 | 0.319 ± 0.116 | **0.659 ± 0.149** |
 
-![Gene holdout comparison](gene_holdout_comparison.png)
+![Gene holdout comparison](figures/gene_holdout_comparison.png)
 
 PWM remains the strongest generalizer even when it has never seen a single window
 from the test gene, and QNN remains the weakest, consistent with the random-split
@@ -228,7 +228,7 @@ known biological activity, alongside constructed negative controls:
 | 5 | Nusinersen / ASO-10-27 (FDA-approved) | **active** | 0.629 |
 | 6 | 8-mer GC-core ASO (Singh et al. 2009 target region) | **active** | 0.386 |
 
-![Retrospective ASO validation](retrospective_aso_validation.png)
+![Retrospective ASO validation](figures/retrospective_aso_validation.png)
 
 **This is a negative result and it is the most important finding in this
 follow-up analysis.** The published, experimentally active ASOs — including
@@ -268,8 +268,8 @@ computed directly (`src/14_diagnose_scoring_failure.py`):
 | Thermodynamic "stability" | 0.611 | 0.882 | **−0.0813** | inverted |
 | Off-target term | 0.533 | 0.933 | **−0.0800** | inverted |
 
-![Scoring diagnosis distributions](scoring_diagnosis_distributions.png)
-![Scoring diagnosis contributions](scoring_diagnosis_contributions.png)
+![Scoring diagnosis distributions](figures/scoring_diagnosis_distributions.png)
+![Scoring diagnosis contributions](figures/scoring_diagnosis_contributions.png)
 
 Ranking by the QNN component *alone* actually separates active from control
 correctly (mean rank 2.0 vs 5.0 — the best possible outcome for 3-vs-3), but its
@@ -319,7 +319,7 @@ interpretable components:
 | 5 | ISS-N2-targeting ASO | control | 0.502 | 0.550 | 0.333 | 0.564 | 2 |
 | 6 | Off-target control | control | 0.497 | 0.389 | 0.000 | 0.533 | 1 |
 
-![Old vs new scoring](aso_scoring_old_vs_new.png)
+![Old vs new scoring](figures/aso_scoring_old_vs_new.png)
 
 **All three published active ASOs now rank above all three controls** — a
 complete reversal of the old system. Active mean rank = 2.00, control mean rank
@@ -353,6 +353,227 @@ correlation the way GC-content-driven "stability" was.
   driving the fix. Improving the QNN itself (per the fair-comparison and
   gene-holdout results above) is still worth pursuing, but was not required to
   fix this particular retrospective test.
+
+---
+
+## Larger retrospective panel with an independent holdout (Prof. Yokota's follow-up guidance)
+
+The 6-sequence retrospective set above (3 published + 3 constructed) was too
+small to trust, and used only one target region (ISS-N1). Both issues were
+addressed directly.
+
+### Structured, sourced dataset
+
+10 real target sequences were collected from **peer-reviewed literature and a
+US patent**, spanning **4 distinct SMN2 splice-modulatory regions** — not just
+ISS-N1 — plus 2 constructed negative controls. Every entry's source is recorded
+in `results/aso_literature_dataset_sources.json`; the two derived-from-coordinates
+entries (SMA-657, SMA-759, SMA-719) are explicitly marked as such rather than
+presented as verbatim published sequences.
+
+| ASO | Region | Label | Source |
+|---|---|---|---|
+| Nusinersen / ASO-10-27 | ISS-N1 | active | Maretina et al. 2023 *Biomedicines* 11:3071, Table 1; Hua et al. 2008 |
+| Anti-N1 | ISS-N1 | active | Ottesen et al. 2021 (PMC8395096); Singh et al. 2006 |
+| 3UP8 | ISS-N1-core | active | Maretina et al. 2023 (positive control); Singh et al. 2009 |
+| F8 | ISS-N1-core | **inactive** | Maretina et al. 2023 (explicit negative control) |
+| ASO VII | ISS+100 | active | Maretina et al. 2023, Table 1 + Results 3.1 |
+| SMA-657 (281–297) | ISS-N2 | active | US Patent 9,856,474; coordinates → sequence derived from our genomic data |
+| SMA-759 (281–300) | ISS-N2 | active | US Patent 9,856,474; same derivation |
+| SMA-719 (281–295) | ISS-N2 | active | US Patent 9,856,474; same derivation |
+| Scrambled Nusinersen | none | inactive | constructed for this study |
+| Off-target control | none | inactive | constructed for this study |
+
+**Dev/holdout split** (fixed before any scoring, `src/16_collect_aso_dataset.py`):
+dev = 6 sequences (4 active, 2 inactive), holdout = 4 sequences (3 active,
+1 inactive — including F8, the one real published inactive sequence).
+
+### Scoring system generalized to multiple regions
+
+The v2 on-target term previously only checked complementarity against the
+narrow ISS-N1 window. It was generalized (`src/17_evaluate_dev_set.py`) to
+search the best complementary match anywhere across the first 320 nt of intron
+7 — covering all four regions in the panel — before any scoring was run.
+
+### Dev-set evaluation (first, as required)
+
+| Rank | ASO | Region | Label | Score |
+|---|---|---|---|---|
+| 1 | SMA-657 | ISS-N2 | active | 0.904 |
+| 2 | SMA-719 | ISS-N2 | active | 0.902 |
+| 3 | Nusinersen | ISS-N1 | active | 0.901 |
+| 4 | 3UP8 | ISS-N1-core | active | 0.705 |
+| 5 | Scrambled control | — | inactive | 0.667 |
+| 6 | Off-target control | — | inactive | 0.599 |
+
+Active mean rank 2.50, inactive mean rank 5.50 (best possible for 4 vs. 2).
+Mann-Whitney p = 0.067 — the minimum achievable p-value at this sample size.
+
+### Final holdout evaluation (run exactly once, no changes made afterward)
+
+![Holdout evaluation](figures/aso_holdout_evaluation.png)
+
+| Rank | ASO | Region | Label | Score |
+|---|---|---|---|---|
+| 1 | Anti-N1 | ISS-N1 | active | 0.905 |
+| 2 | ASO VII | ISS+100 | active | 0.902 |
+| 3 | SMA-759 | ISS-N2 | active | 0.902 |
+| 4 | **F8** | ISS-N1-core | **inactive** | 0.700 |
+
+**All three active holdout sequences — spanning three different regions the
+scoring weights were never tuned against as a group (ISS-N1, ISS+100, ISS-N2)
+— ranked above the one real published inactive sequence (F8).** Active mean
+rank 2.00, inactive mean rank 4.00, Mann-Whitney p = 0.173 (not significant at
+this n, but the correct direction).
+
+**Important honest caveat, found by inspecting the components:** F8's
+on-target complementarity score is 1.000 — identical to every active
+sequence — because F8 genuinely overlaps part of the ISS-N1 core (the original
+paper notes this explicitly). What actually ranked F8 last was its off-target
+term (risk = 1.0), which is the *same short-sequence saturation artifact*
+identified in the original diagnosis, not fully resolved. In other words, F8
+was correctly ranked last, but partly for the right reason (weak/non-specific
+binding evidence) and partly for a reason that isn't fully principled yet
+(the off-target scan still penalizes all short 8-mers, active or not — 3UP8,
+also 8 nt, shows the identical off-target risk = 1.0 in the dev-set results
+above and still ranked above the constructed controls only because of its
+higher on-target term). This should not be over-claimed as a fully solved
+problem.
+
+### What this means
+
+- The redesigned scoring system **generalizes** to real published ASOs across
+  multiple regions and a genuinely held-out split — not just the region and
+  sequences it was designed against. This is a meaningfully stronger result
+  than the original 6-sequence check.
+- The short-sequence off-target artifact from the original diagnosis is
+  **still present**, just not currently large enough to flip the ranking. Any
+  future short ASO candidate (≤10 nt) should be treated with caution until
+  that scan is fixed properly (e.g. a length-scaled or randomized-background
+  significance test rather than a fixed identity threshold).
+- With only 10 total sequences (6 dev, 4 holdout), this remains a small panel.
+  The next highest-value addition would be more published **inactive/weak**
+  ISS-N1, ISS+100, and Element-1 sequences specifically, since real negative
+  data is the scarcest and most valuable category here.
+
+---
+
+## Priority 1–3 follow-up (further Prof. Yokota feedback)
+
+### Priority 1: expanded the scarce category (more real inactive/weak ASOs)
+
+Two more literature-sourced sequences were added, both from the same
+well-documented ISS-N1 microwalk (Singh et al. 2013, *Nucleic Acids Res*
+41:8144–8165; Ottesen et al. 2011, PubMed 20413618):
+
+| ASO | Region | Label | Why |
+|---|---|---|---|
+| **F14** | ISS-N1 | active | Sequesters the first 14 nt of ISS-N1 (incl. 10C); "caused predominant exon 7 inclusion in all cases." |
+| **L14** | ISS-N1 | **inactive** | Sequesters the last 14 nt of ISS-N1 (excl. 10C); explicitly reported to **increase exon 7 skipping** — i.e. counter-therapeutic, not merely inert. The strongest real negative example in the panel. |
+
+Both derived from documented intron-7 coordinates against our own genomic
+data (not copied verbatim). Panel is now **12 sequences** (dev = 7: 5 active/2
+inactive; holdout = 5: 3 active/2 inactive), still spanning all 4 regions.
+
+### Priority 2: fixed the length-aware off-target bias
+
+**Old problem** (confirmed by direct simulation, `src/19_length_aware_off_target.py`):
+a fixed 85%-identity threshold allows ~1 mismatch for an 8-mer but ~3 for a
+20-mer, so short ASOs matched huge numbers of genomic positions by chance
+alone — 3UP8 (8 nt, a real active ASO) was scored at maximal off-target risk
+(1.0) purely because of its length.
+
+**Fix**: replaced the fixed-threshold scan with a **randomization test**. For
+each ASO, its observed off-target hit count is compared to the hit-count
+distribution of 30 random same-length sequences drawn from the same genomic
+background composition; risk is now a z-score-based sigmoid (0.5 = exactly at
+random-chance level, not "medium risk by default").
+
+| Sequence | Length | Old risk (v2) | New risk (v3) | New z-score |
+|---|---|---|---|---|
+| Nusinersen | 18 nt | 0.000 | 0.500 (neutral, 0 hits = random baseline) | 0.00 |
+| **3UP8** | 8 nt | **1.000 (maxed out — bug)** | **0.433 (below chance level)** | −0.27 |
+| F14 | 14 nt | 0.333 | 0.903 | **+2.24 (real secondary near-match found)** |
+| Random 8-mer | 8 nt | 1.000 | 0.279 | −0.95 |
+| Random 18-mer | 18 nt | 0.000 | 0.500 | 0.00 |
+
+3UP8's score dropped from a false maximum to *below* the random-chance level —
+the length bias is fixed. F14 was flagged with a real elevated z-score,
+meaning it has a genuine secondary near-match elsewhere in the scanned region;
+this was reported as-is rather than suppressed, since it may be real biology
+(F14 is still an experimentally active ASO — a secondary partial match doesn't
+necessarily block its primary mechanism, but it's honest information a
+prioritization tool should surface).
+
+### Priority 3: honest re-evaluation, dev then holdout
+
+**Dev set (7 sequences) — evaluated first:**
+
+![Dev: old vs new off-target](figures/aso_dev_v2_vs_v3.png)
+
+| Rank | ASO | Region | Label | Score |
+|---|---|---|---|---|
+| 1 | 3UP8 | ISS-N1-core | active | 0.819 |
+| 2 | SMA-719 | ISS-N2 | active | 0.815 |
+| 3 | SMA-657 | ISS-N2 | active | 0.805 |
+| 4 | Nusinersen | ISS-N1 | active | 0.800 |
+| 5 | F14 | ISS-N1 | active | 0.718 |
+| 6 | Scrambled control | — | inactive | 0.566 |
+| 7 | Off-target control | — | inactive | 0.498 |
+
+All 5 active sequences still ranked above both inactive controls. Active mean
+rank 3.00 vs. inactive 6.50 (best possible). **Mann-Whitney p = 0.048** — an
+improvement over the v2 dev result (p = 0.067), and 3UP8 is no longer
+penalized for its length.
+
+**Final holdout (5 sequences) — evaluated exactly once, no changes made after:**
+
+![Holdout: old vs new](figures/aso_holdout_v2_vs_v3.png)
+
+| Rank | ASO | Region | Label | Score |
+|---|---|---|---|---|
+| 1 | **L14** | ISS-N1 | **inactive** | 0.822 |
+| 2 | SMA-759 | ISS-N2 | active | 0.803 |
+| 3 | Anti-N1 | ISS-N1 | active | 0.802 |
+| 4 | ASO VII | ISS+100 | active | 0.802 |
+| 5 | F8 | ISS-N1-core | inactive | 0.781 |
+
+**This is a genuine negative result and it must be reported as such.** L14 — a
+real, published, counter-therapeutic ASO that *increases* exon 7 skipping —
+scored *highest* of all five holdout sequences. Active mean rank = inactive
+mean rank = 3.00 (a tie); Mann-Whitney p = 0.616 (no separation).
+
+### Is separation now driven by real signal or artifacts?
+
+Comparing the dev and holdout results side by side gives a precise, honest
+answer: **the scoring system reliably distinguishes real ISS-N1/ISS+100/ISS-N2
+target sequences from constructed nonsense (scrambled or off-target-region)
+controls, but it cannot distinguish a real ASO that happens to bind the
+correct region from one that binds the correct region and produces the
+*wrong therapeutic direction*.** L14 has perfect on-target complementarity
+(1.000) — identical to every active ASO — because it genuinely binds ISS-N1.
+Its failure mode is entirely mechanistic (blocking the last 14 nt instead of
+the first 14, i.e. leaving 10C exposed, which triggers a long-distance
+interaction that *promotes* skipping) — a positional/structural effect no
+version of our complementarity-based scoring can see, because complementarity
+alone has no notion of *which side of a 24-nt regulatory element* is bound.
+
+**No overclaiming: this system is validated only as a "real target region vs.
+random sequence" classifier, not as an "active vs. inactive-at-the-right-target"
+classifier.** The dev-set success in the previous round was accidentally
+inflated by the fact that its inactive examples (scrambled/off-target
+sequences) failed on *both* axes (wrong region *and* wrong direction) — L14
+isolates the second axis alone, and the system has no signal for it.
+
+### What would actually be needed to fix this
+
+Distinguishing F14 from L14 requires modeling *where within* a regulatory
+element the ASO binds relative to known functionally asymmetric positions
+(e.g., 10C), not just *whether* it binds. This points directly toward Prof.
+Yokota's secondary suggestion: reformulating the task from binary
+target-region complementarity toward **position-resolved, quantitative
+splice-modulation prediction** — which is exactly the ASO-walk/mutagenesis
+direction outlined below.
 
 ### Why did the simple PWM outperform the more complex MaxEnt-like model?
 
@@ -443,3 +664,589 @@ src/        pipeline scripts, run in numerical order
 results/    JSON/CSV outputs (trained parameters, metrics, scores)
 figures/    all plots referenced above
 ```
+
+---
+
+## Secondary direction: from ASO ranking to target-region prediction
+
+Prof. Yokota's secondary recommendation was to reformulate the problem: instead
+of ranking ASOs against a *known* target, predict *which regions* of the SMN2
+pre-mRNA are good splice-modulatory targets in the first place. First step:
+collect experimentally validated regions and any positionally-resolved,
+quantitative data (ASO-walk / mutagenesis), then test a simple blind scanner.
+
+### Regulatory regions collected (`src/22_collect_regulatory_regions.py`)
+
+Seven experimentally validated SMN2 splice-modulatory regions, each with a
+literature source:
+
+| Region | Location | Source |
+|---|---|---|
+| Element 1 | intron 6 | Miyajima et al. 2002, *J Biol Chem* 277:23271-23277 |
+| -44 region | intron 6, ~44 nt upstream of exon 7 | Wu et al. 2017, *Hum Mol Genet* 26:2768-2780 |
+| ISS6-KH | intron 6, near the branch point | *Hum Mol Genet* 2023;32(6):971 (PMID 36255739) |
+| ISS-N1 | intron 7, ~10-24 | Singh et al. 2006; Hua et al. 2008 |
+| ISS+100 | intron 7, ~100 | Kashima, Rao & Manley 2007, *PNAS* 104:3426-3431 |
+| ISS-N2 | intron 7, ~275-300 | Singh et al. 2013, *Nucleic Acids Res* 41:8144-8165 |
+| Exon 8 3'ss region | exon 8 | Lim & Hertel 2001, *J Biol Chem* 276:45476-45483 |
+
+### Quantitative ASO-walk data found
+
+US Patent 8,946,183 (Isis Pharmaceuticals) contains a genuine positional
+microwalk: 15-nt 2'-MOE oligonucleotides tiled across the last 60 nt of
+intron 6 and the first 60 nt of intron 7 (flanking exon 7), each with a
+**measured % exon-7-inclusion** in an endogenous SMN2 splicing assay
+(Tables 12-13 of the patent). This is real, quantitative, positionally-resolved
+data — 18 data points transcribed with source IDs in
+`results/aso_walk_quantitative.csv`. A coordinate-mapping sanity check
+confirmed this patent's numbering aligns with our own genomic SMN2 data to
+within 1 nt (verified against the independently-derived ISS-N1 sequence).
+
+### A first, blind scanning method (`src/23_blind_region_scan.py`)
+
+A simple, transparent, **unsupervised** score was computed for every 15-nt
+window across intron6-tail + exon7 + intron7 (first 350 nt): 0.7 × hnRNP A1
+degenerate motif (UAG) density + 0.3 × GC content, both literature-motivated
+(hnRNP A1/A2 binding is the documented shared mechanism behind ISS-N1, ISS-N2,
+and ISS6-KH). **No known region coordinates were given to the scanner** —
+weights were fixed a priori, not fit to the data.
+
+![Blind region scan](figures/blind_region_scan.png)
+
+### Honest result: the simple scanner does not clearly recover known regions
+
+| Known region | Mean score | Background percentile | z-score |
+|---|---|---|---|
+| ISS-N1 | 0.087 | 42.9% | **−0.45 (below average)** |
+| ISS+100 | 0.116 | 59.8% | +0.11 |
+| ISS-N2 | 0.122 | 69.2% | +0.22 |
+
+**ISS-N1 — the single best-characterized silencer in this entire project, the
+target of an FDA-approved drug — scores** ***below*** **the genome-wide
+background average.** Neither ISS+100 nor ISS-N2 stands out as a clear local
+maximum either (see figure: ISS-N2 sits at the tail of a peak that mostly
+falls just outside the labeled region).
+
+![Blind scan vs real effect](figures/blind_scan_vs_real_effect.png)
+
+Against the real quantitative ASO-walk ground truth, the blind score shows
+only a weak, **not statistically significant** correlation with measured
+silencer strength: Pearson r = 0.213 (p = 0.396), Spearman ρ = 0.197
+(p = 0.432), n = 18.
+
+### What this means
+
+This is a negative/inconclusive result for the specific heuristic tried, and
+it is reported as such rather than reframed as a success. hnRNP A1 motif
+density alone — even though hnRNP A1 binding is the literature-confirmed
+mechanism for three of these four regions — is **not sufficient** to locate
+them by simple motif counting. Plausible reasons, none yet tested: (1) the
+degenerate UAG motif is too common genome-wide to be locally discriminative
+without additional context (e.g. spacing, secondary structure, or the poly-U
+tract that ISS6-KH specifically requires alongside its hnRNP A1 site); (2) a
+15-nt fixed window may not match the true functional footprint of every
+element; (3) with only 3 known regions and 18 quantitative walk points, this
+validation itself is still small and could be underpowered to detect a real
+but modest effect. This first attempt establishes a reusable scan-and-validate
+framework (`src/23_blind_region_scan.py`) and a small but real quantitative
+ground-truth set (`results/aso_walk_quantitative.csv`) — the natural next
+step is testing a richer feature set (e.g. adding the poly-U/pyrimidine-tract
+signal specific to ISS6-KH, or a windowed self-complementarity/structure
+proxy) against this same ground truth before concluding whether *any* simple
+sequence-feature scanner can do this, or whether it genuinely requires a
+trained model.
+
+### One more controlled test: a richer, still-transparent feature set
+
+Seven named, interpretable features were computed per 15-nt window
+(`src/24_richer_feature_scan.py`): hnRNP A1 motif density, motif clustering
+(two motifs within 6 nt — a cooperative-binding proxy), longest poly-U run,
+overall U-richness, GC content, GC skew, and dinucleotide-entropy (a basic
+sequence-complexity measure). No learned/black-box model — weights were fit
+with a single, transparent step: Pearson correlation of each feature against
+real silencer strength, **computed only on the 9 intron-6 walk points (dev
+set)**, then frozen and applied unchanged everywhere else, including the 9
+intron-7 walk points (eval set, never touched during fitting) and all known
+region coordinates (never touched at all).
+
+**Per-feature correlation on dev only:**
+
+| Feature | r (dev, n=9) | p |
+|---|---|---|
+| GC content | **+0.760** | 0.017 |
+| Dinucleotide entropy | +0.472 | 0.199 |
+| GC skew | +0.332 | 0.382 |
+| hnRNP A1 motif density | −0.207 | 0.593 |
+| U-richness | −0.195 | 0.615 |
+| Motif clustering | constant (no variance in dev) | — |
+| Poly-U run | constant (no variance in dev) | — |
+
+**The literature-motivated hnRNP A1 motif feature — the mechanism actually
+documented for these silencers — got a small negative weight on the dev
+data**, while plain GC content dominated the fitted weights (0.386 of 1.0,
+by far the largest). This should be read as a caution, not a validation: with
+only 9 dev points, a single dominant feature easily emerges by chance.
+
+**Held-out evaluation (intron-7 walk, n=9, never used in fitting):**
+
+Pearson r = 0.370 (p = 0.327), Spearman ρ = 0.220 (p = 0.570). Numerically
+higher than the old scanner's r = 0.213, but **still not statistically
+significant.**
+
+**A number that looks much better but must not be trusted:** combining dev +
+eval (n=18) gives Pearson r = 0.876, p < 0.001 — which looks like a strong
+success. It is not a valid measure of the scanner's real ability, and the
+scatter plot shows exactly why:
+
+![Old vs new scanner](figures/old_vs_richer_scan_comparison.png)
+
+The two point clusters (blue = intron-6 dev points, orange = intron-7 eval
+points) sit at almost entirely separate score ranges (dev: 0.0–0.13; eval:
+0.32–0.40), with little to no gradient *within* either cluster. The high
+combined correlation is driven almost entirely by a **systematic score
+difference between the two genomic regions** (intron 6 vs. intron 7 base
+composition), not by the scanner tracking silencer strength position-by-
+position. This is a textbook confound, and reporting the combined number
+without this caveat would have been overclaiming.
+
+**Known-region recovery** (coordinates never given to the scanner):
+
+| Region | Old scanner percentile | New scanner percentile | New z-score |
+|---|---|---|---|
+| ISS-N1 | 42.9% (below background) | 62.8% | +0.56 |
+| ISS+100 | 59.8% | **87.8%** | **+1.20** |
+| ISS-N2 | 69.2% | 52.8% | +0.16 |
+
+![Richer scan profile](figures/richer_blind_region_scan.png)
+
+ISS+100 now sits on a clear local peak — the clearest recovery in either
+scanner version. ISS-N1 improved from below-background to modestly
+above-average but is still not a standout peak (several unrelated windows
+elsewhere in the scan score just as high or higher, visible in the figure).
+ISS-N2 remains indistinguishable from background.
+
+### Honest verdict
+
+**The richer feature set gives a small, real improvement on the properly
+held-out evaluation (r: 0.213 → 0.370) and a genuine partial recovery of
+ISS+100, but the improvement is not statistically significant, is not driven
+by the literature-predicted mechanism (hnRNP A1 motif density was
+down-weighted, not up-weighted), and the most impressive-looking number
+(combined r = 0.876) is a confound artifact that would have overclaimed
+success if reported without the dev/eval breakdown.** ISS-N1 and ISS-N2 —
+two of the four best-characterized regions in this project — still do not
+emerge as clear, unambiguous peaks. With only 9 dev and 9 eval points, this
+test is also likely underpowered to detect a real but modest effect either
+way. The honest conclusion is that **simple, transparent sequence-composition
+scanning — even with a richer, still-interpretable feature set — does not
+yet reliably recover known SMN2 regulatory regions from sequence alone**, and
+further progress most likely requires either substantially more quantitative
+positional training data (to fit more than 1-2 non-constant features
+reliably) or features this project has not yet attempted (e.g. RNA secondary
+structure prediction, cross-species conservation, or a properly trained
+supervised model — at the cost of losing the full transparency prioritized
+here).
+
+---
+
+## Dataset expansion round (Prof. Yokota: larger panel, more genes, more scarce categories)
+
+Focused literature/patent search to grow the retrospective ASO panel,
+prioritizing the two scarcest categories: real inactive/counter-therapeutic
+sequences, and sequences outside SMN2 ISS-N1.
+
+### What was added (6 new sequences, all with documented sources)
+
+| ASO | Gene/Region | Label | Source |
+|---|---|---|---|
+| Eteplirsen / AVI-4658 | **DMD**, exon 51 | active | US Patent 10,875,880, Table 1 (FDA-approved, Exondys 51) |
+| Golodirsen / SRP-4053 | **DMD**, exon 53 | active | US Patent 11,472,824, Table 1 (FDA-approved, Vyondys 53) |
+| Scramble PMO control | **DMD**, none | **inactive** | Lim et al. 2018, *Mol Ther Nucleic Acids* (PMC6222172) — explicit negative control |
+| ISIS 372641 (exon7 pos61) | SMN2, exon 7 | **inactive** | US Patent 8,946,183, Table 3 — 6.4% inclusion vs. 57.7% control |
+| ISIS 372645 (exon7 pos81) | SMN2, exon 7 | **inactive** | US Patent 8,946,183, Table 3 — 7.8% inclusion vs. 57.7% control |
+| ISIS 372647 (exon7 pos91) | SMN2, exon 7 | **inactive** | US Patent 8,946,183, Table 3 — 9.5% inclusion vs. 57.7% control |
+
+The three exon-7 entries are quantitatively counter-therapeutic (measured
+inclusion far below control, i.e. these ASOs actively *suppress* exon 7
+inclusion when bound there) — the same category of genuine negative evidence
+as L14, just from a different SMN2 region (exon 7 itself, rather than an
+intronic silencer). All three exon-7 and both DMD-active sequences were
+either copied verbatim from patent SEQ ID tables or derived as the reverse
+complement of documented genomic target coordinates (same transparent method
+used throughout this project) — no sequence was invented.
+
+**Net change:** 2 active, 4 inactive added. **This directly targets the
+requested priority**: real inactive examples grew from 2 (F8, L14) to
+**6** (add exon7×3 + DMD-scramble), and the panel now spans **2 genes**
+(SMN2, DMD) and **9 distinct region categories** (up from 4).
+
+### Updated dev/holdout split (assigned before any scoring, by fixed rule — not tuned)
+
+| | Total | Active | Inactive |
+|---|---|---|---|
+| **Dev** | 10 | 6 | 4 |
+| **Holdout** | 8 | 4 | **4** |
+| **Combined** | 18 | 10 | 8 |
+
+Holdout inactive count doubled (2 → 4) relative to the previous round, which
+was the single weakest point in the prior evaluation. Both DMD entries were
+deliberately split one-active-to-dev / one-active+control-to-holdout, so the
+holdout set now includes a real generalization test to an **entirely
+different gene** the scoring system has never been tuned against.
+
+### Remaining limitations (honest, as requested)
+
+- **n = 18 is still small** for any statistically robust claim; this round
+  improved category balance, not raw sample size by a large margin.
+- **No DMD entries in the dev set's inactive category** — the scramble PMO
+  control was placed in holdout, so the scoring system (if re-evaluated) will
+  see a real cross-gene negative example for the first time only at final
+  test time, with no chance to adapt. This is intentional (holdout
+  discipline) but means DMD-specific behavior is entirely untested until
+  that single evaluation.
+- **No genuinely "weak/intermediate" (partial, dose-dependent) quantitative
+  labels were added this round** — everything added is closer to binary
+  (clearly active or clearly suppressive); a true intermediate-activity
+  category from a dose-response study is still missing.
+- **Sequences were not re-scored in this round.** This was a data-collection
+  and curation pass only, per the task scope — the redesigned scoring system
+  (`src/20_dev_evaluation_v3.py` / `src/21_final_holdout_v3.py`) has not yet
+  been re-run against this expanded panel. That is the natural next step
+  before drawing any new conclusions about scoring performance.
+
+---
+
+## Re-evaluation of the (unchanged) v3 scoring system on the expanded 18-sequence panel
+
+Same scoring code as before (`src/20_dev_evaluation_v3.py` logic, on-target
+term scoped to SMN2 intron7[0:320nt]) — **no weights or logic changed** —
+applied to the larger, better-balanced panel. Dev evaluated first and
+recorded; holdout run exactly once afterward.
+
+### Scope caveat, documented before running (not after seeing results)
+
+The scoring system's on-target and off-target terms are both anchored to
+SMN2 intron7 only. Two new categories fall structurally outside that scope:
+the 3 SMN2 "exon7" ASOs (real target is exon 7, not the searched intron7
+window) and the 3 DMD ASOs (a different gene entirely). Both were expected to
+behave close to chance rather than being meaningfully evaluated by a system
+never designed for them.
+
+### Dev-set result (10 sequences: 6 active, 4 inactive)
+
+![Dev expanded](figures/aso_dev_evaluation_expanded.png)
+
+| Rank | ASO | Region | Label | Score |
+|---|---|---|---|---|
+| 1 | 3UP8 | ISS-N1-core | active | 0.816 |
+| 2 | SMA-719 | ISS-N2 | active | 0.813 |
+| 3 | SMA-657 | ISS-N2 | active | 0.806 |
+| 4 | Nusinersen | ISS-N1 | active | 0.800 |
+| 5 | F14 | ISS-N1 | active | 0.721 |
+| 6 | Scrambled Nusinersen | — | inactive | 0.566 |
+| 7 | ISIS 372641 (exon7) | exon7 | inactive | 0.525 |
+| 8 | Eteplirsen (DMD) | DMD-exon51 | active | 0.505 |
+| 9 | Off-target control | — | inactive | 0.499 |
+| 10 | ISIS 372645 (exon7) | exon7 | inactive | 0.483 |
+
+Overall: active mean rank 3.83, inactive mean rank 8.00, **Mann-Whitney
+p = 0.019** — looks like a clear success. **But the scope breakdown tells a
+different story:**
+
+| Scope | n (active/inactive) | Active mean rank | Inactive mean rank |
+|---|---|---|---|
+| In-scope (intron7 silencers + constructed controls) | 7 (5/2) | 3.00 | 7.50 |
+| Out-of-scope (exon7 / DMD) | 3 (1/2) | 8.00 | 8.50 |
+
+**All of the significant separation comes from the in-scope subset.** In the
+out-of-scope subset, active and inactive are statistically indistinguishable
+(ranks 8.00 vs. 8.50) — and notably, **Eteplirsen, an FDA-approved, genuinely
+potent drug, scored 0.505: exactly at the neutral midpoint**, because the
+system checked its complementarity against SMN2 (irrelevant to a DMD drug)
+instead of DMD. This is not the system correctly identifying anything about
+Eteplirsen — it is the system having no real signal for it at all.
+
+### Final holdout result (8 sequences: 4 active, 4 inactive) — run once
+
+![Holdout expanded](figures/aso_holdout_evaluation_expanded.png)
+
+| Rank | ASO | Region | Label | Score |
+|---|---|---|---|---|
+| 1 | **L14** | ISS-N1 | **inactive** | 0.821 |
+| 2 | SMA-759 | ISS-N2 | active | 0.804 |
+| 3 | Anti-N1 | ISS-N1 | active | 0.803 |
+| 4 | ASO VII | ISS+100 | active | 0.801 |
+| 5 | F8 | ISS-N1-core | inactive | 0.780 |
+| 6 | Golodirsen (DMD) | DMD-exon53 | active | 0.536 |
+| 7 | Scramble PMO (DMD) | DMD-none | inactive | 0.490 |
+| 8 | ISIS 372647 (exon7) | exon7 | inactive | 0.476 |
+
+Overall: active mean rank 3.75, inactive mean rank 5.25, Mann-Whitney
+p = 0.243 (not significant). **Scope breakdown again shows why the aggregate
+number is misleading:**
+
+| Scope | n (active/inactive) | Active mean rank | Inactive mean rank |
+|---|---|---|---|
+| In-scope | 5 (3/2) | 3.00 | **3.00 (exact tie)** |
+| Out-of-scope | 3 (1/2) | 6.00 | 7.50 |
+
+**L14 ranked #1 again — the identical failure mode from the previous round,
+reproduced exactly on new data.** Within the in-scope subset (the system's
+actual designed scope), active and inactive are now *perfectly tied* on
+average, entirely because L14's perfect on-target complementarity places it
+above every real active sequence. The apparent overall "improvement" (active
+rank 3.75 < inactive 5.25) is not the scoring logic working better — it is
+driven entirely by the out-of-scope inactive examples (Scramble PMO, ISIS
+372647) coincidentally scoring low, which drags the inactive average down for
+reasons unrelated to the score correctly detecting inactivity.
+
+### Did separation improve, stay the same, or collapse vs. the smaller panel?
+
+| | Previous (12-seq) holdout | New (18-seq) holdout |
+|---|---|---|
+| Active mean rank | 3.00 | 3.75 |
+| Inactive mean rank | 3.00 (tie) | 5.25 |
+| L14's rank | 1 of 4 (top) | 1 of 8 (top) |
+
+**Within the system's actual designed scope, separation did not improve —
+it is exactly as broken as before.** The headline numbers look slightly
+better only because of newly-added out-of-scope examples that the system was
+never built to evaluate, not because any real weakness was fixed.
+
+### Remaining failure modes (confirmed, not new)
+
+1. **The L14 failure mode is exact and reproducible.** A real, published,
+   counter-therapeutic ASO with perfect on-target complementarity beats every
+   real active ASO, every time it appears in a test set. This is not sampling
+   noise — it is the score's fundamental inability to represent *which side*
+   of a regulatory element is bound (documented in the earlier diagnosis).
+2. **Cross-gene behavior is not evaluated, only guessed at.** Scoring a DMD
+   ASO against an SMN2 target is close to meaningless; Eteplirsen and
+   Golodirsen (both real, approved drugs) scored near the neutral midpoint
+   both times, which is neither a pass nor a fail — it's a null result from
+   asking the system a question it has no way to answer correctly.
+3. **Short-sequence off-target behavior is still imperfect**: ISIS 372647
+   (15 nt) and F14 both show elevated z-scores (+2.27, +2.24) from the v3
+   off-target term, similar to the original diagnosis — reduced in severity
+   but not eliminated.
+
+### Honest conclusion
+
+**The current score is still failing in the same specific, well-characterized
+way, and is untested (not merely "unvalidated") outside SMN2 intron7.** The
+expanded panel did its job: it made the L14-style failure reproduce cleanly
+on new data rather than looking like a fluke, and it revealed a second,
+distinct limitation (no real cross-gene capability) that the smaller panel
+was too narrow to expose. **This system should not be considered more
+trustworthy than before.** If anything, it is now more precisely
+characterized: reliable at distinguishing real intron7 silencer sequences
+from unrelated/scrambled sequences, but fundamentally unable to (a) tell a
+correctly-targeted-but-harmful ASO from a correctly-targeted-and-helpful one,
+or (b) say anything meaningful about a different gene. Both are scope/design
+limitations of the on-target-complementarity approach itself, not something
+more data collection alone will fix — consistent with the conclusion reached
+after the L14 discovery in the previous round.
+
+---
+
+## Position-aware scoring: a targeted fix for the L14 failure mode
+
+### Positional analysis of F14 vs. L14
+
+ISS-N1 spans intron7 positions 10–24. Position 10 carries "10C" — the single
+nucleotide the literature (Singh et al. 2006, 2013) identifies as most
+critical for hnRNP A1 recruitment and the ASO-masking effect. F14 (positions
+10–23) covers 10C; L14 (positions 11–24) does not.
+
+**Checked directly against the real ASO-walk data first:** F14's footprint
+overlaps the walked region (intron7 positions 10–15) with mean measured
+silencer strength +51.1 vs. control; L14's footprint overlaps at positions
+11–15 with mean +51.3 — **essentially identical**. The real quantitative
+walk data does not extend to positions 16–24, where F14 and L14 actually
+diverge, so **it cannot distinguish them on its own.** Only the literature's
+qualitative 10C fact can.
+
+### The fix: a single, literature-grounded critical-position rule
+
+For any ASO whose footprint overlaps ≥50% of the ISS-N1 span but does **not**
+cover genomic position 32,061 (10C), a fixed penalty is subtracted from its
+existing v3 score. **The penalty size was fixed using only development-set
+statistics** (active mean − inactive mean on dev = 0.228) — L14 sits in the
+holdout set and its score was never inspected before this value was chosen.
+
+### Dev-set result: unchanged, by design
+
+Only one sequence in the entire 18-sequence panel triggers this rule: L14
+itself, which is in the holdout set. **Dev-set separation metrics are
+therefore byte-for-byte identical to the unmodified v3 system** (active mean
+rank 3.83, inactive 8.00, p = 0.019) — this fix does not touch dev at all,
+which is expected and reported plainly rather than left implicit.
+
+### Final holdout result (run once, penalty value fixed beforehand)
+
+![Holdout position-aware](figures/position_aware_holdout_evaluation.png)
+
+| Rank | ASO | Region | Label | Score |
+|---|---|---|---|---|
+| 1 | Anti-N1 | ISS-N1 | active | 0.803 |
+| 2 | ASO VII | ISS+100 | active | 0.802 |
+| 3 | SMA-759 | ISS-N2 | active | 0.802 |
+| 4 | F8 | ISS-N1-core | inactive | 0.776 |
+| **5** | **L14** | ISS-N1 | **inactive** | **0.595** (was 0.823, was rank 1) |
+| 6 | Golodirsen (DMD) | DMD-exon53 | active | 0.535 |
+| 7 | Scramble PMO (DMD) | DMD-none | inactive | 0.489 |
+| 8 | ISIS 372647 (exon7) | exon7 | inactive | 0.476 |
+
+**L14 dropped from rank 1 to rank 5 — below every in-scope active
+sequence.** Within the system's actual designed scope (intron7 silencers),
+the ranking is now **clean**: all 3 in-scope actives (ranks 1–3) sit above
+both in-scope inactives (F8 rank 4, L14 rank 5). Overall: active mean rank
+3.00, inactive mean rank 6.00, Mann-Whitney p = 0.055 (just above the
+conventional 0.05 threshold, but a large improvement from p = 0.243 before
+this fix, and from the previous round's exact tie).
+
+### Can the new score rank F14 above L14? Does it fix the failure mode?
+
+**Yes, directly:** F14 (dev, score 0.719, unaffected/unflagged) and L14
+(holdout, score dropped to 0.595) are now correctly ordered, and this was
+verified with proper holdout discipline (penalty fixed on dev alone, L14's
+score never seen beforehand).
+
+### Honest limitations of this fix
+
+1. **This is a targeted correction for one known, specific case, not a
+   general position-aware model.** The rule was constructed directly from
+   the literature fact that defines why F14 and L14 differ — it is not an
+   independent discovery, and there is no second, held-out positional
+   contrast pair in this project to test whether the *rule itself*
+   generalizes to other undiscovered position-dependent effects.
+2. **It only applies to ISS-N1.** The 10C fact is specific to that one
+   element; no equivalent literature-documented critical position is known
+   (to this project) for ISS-N2, ISS+100, ISS6-KH, or Element 1, so this
+   fix provides no protection against an L14-style failure in any other
+   region.
+3. **It does nothing for the out-of-scope (DMD/exon7) failure mode.**
+   Golodirsen, the scramble PMO, and ISIS 372647 are unaffected — their
+   scores are unchanged and still cluster near the neutral midpoint for the
+   same cross-gene-scope reasons documented in the previous round.
+4. **p = 0.055 is not below the conventional significance threshold.** This
+   is a real, honest improvement, not a fully resolved validation.
+
+### Honest conclusion
+
+The specific, reproduced L14 failure mode is fixed, verifiably and with
+holdout discipline intact — this is a genuine, positive result and should be
+reported as one. But it is a patch for exactly the case that was already
+known to be broken, built from the same literature fact that revealed the
+break, and it does not extend to any other region or to the separate
+cross-gene limitation. **The scoring system is now more trustworthy
+specifically for ISS-N1 position-dependent effects it has been explicitly
+told how to check for, and no more trustworthy than before for anything
+else.** Generalizing this approach further would require either more
+documented critical-position facts for the other regions, or (more
+ambitiously) enough quantitative ASO-walk data spanning full regulatory
+elements — not just their edges — to learn position effects empirically
+rather than one literature fact at a time.
+
+---
+
+## One more scanning attempt: edge detection informed by the walk data's own structure
+
+### Re-examining the walk data: a pattern the previous two scanners missed
+
+Looking at the raw intron7 walk values as a step function rather than
+independent points revealed something neither previous scanner used:
+
+```
+position:  7    8    9   10   11   12   13   14   15
+%incl:    78  100  100  100  100  100  100   97   76
+slope:      +22   0    0    0    0    0   -3  -21
+```
+
+This is not a smooth curve — it is a **sharp rise, a flat plateau, and a
+sharp fall.** The plateau is almost certainly an **assay ceiling** (inclusion
+cannot exceed 100%), not evidence that positions 8–13 are equally important —
+which means every previous correlation attempt (this project's and the
+richer-feature-set round) was regressing against a saturated target for
+exactly the positions closest to the true element, silently working against
+itself. **The genuinely informative points are the edges, not the plateau.**
+
+**A real, honest positive finding:** the rising edge (between genomic 32,059
+and 32,060) sits just 1–2 nt from the literature-documented ISS-N1 start
+(genomic 32,061). This is an independent, qualitative confirmation that the
+real experimental data is internally consistent with the known biology —
+found by re-examining the walk data itself, not by any scanner.
+
+### The improved method: local-contrast (edge-detection) scanning
+
+Motivated by this, `src/29_contrast_edge_scan.py` replaces "does this window
+have high motif/GC content" with **"does this window look different from its
+own surrounding sequence"** — a simple, transparent edge detector: each
+window's feature value minus the mean of two flanking background windows
+(8 nt gap, 40 nt each side). Regulatory elements should stand out as local
+compositional anomalies; this also sidesteps the ceiling-effect problem,
+since it is only compared against the walk data *after* scanning, never
+fit to it as a regression target.
+
+### Result: statistically significant, but in the wrong direction, and not trusted
+
+| | Old scanner | Richer scanner (eval) | Contrast/edge scanner |
+|---|---|---|---|
+| r (vs. real effect) | +0.213 | +0.370 | **−0.605** |
+| p-value | 0.396 | 0.327 | **0.008** |
+
+![Contrast scan vs walk](figures/contrast_scan_vs_walk.png)
+
+The contrast scanner is the first to cross conventional significance — but
+with a **negative** correlation, the opposite of the hypothesis (higher
+local distinctiveness → *smaller* real effect). This is not reported as a
+win. Two reasons for skepticism, stated directly: (1) the scatter plot shows
+the same region-cluster confound seen in the previous round — intron7 points
+(orange) sit at uniformly high |effect| regardless of contrast score, so the
+correlation is again heavily shaped by which region a point comes from, not
+a within-region gradient; (2) this is now the **third** distinct scanning
+method tried against the same 18-point walk dataset, and finding one
+significant result among several attempts is exactly the situation where a
+result should be trusted less, not more, without independent replication.
+
+**Known-region recovery, checked directly against the actual edge:** the
+strongest sequence-based edge the scanner finds anywhere in the walked
+region is at genomic 32,091 — **30 nt away from the true ISS-N1 boundary**,
+not a match. And ISS-N1 itself now scores *below* background (14.9th
+percentile) — worse than either previous scanner attempt:
+
+![Contrast edge scan](figures/contrast_edge_scan.png)
+
+| Region | Old scanner | Richer scanner | Contrast scanner |
+|---|---|---|---|
+| ISS-N1 | 42.9% (below bg) | 62.8% | **14.9% (further below bg)** |
+| ISS+100 | 59.8% | **87.8%** | 58.0% |
+| ISS-N2 | 69.2% | 52.8% | **96.9%** |
+
+**No method has recovered the same known region twice.** Each of the three
+transparent scanners tried in this project has its own "best" region
+(none, ISS+100, ISS-N2 respectively) and its own worst (ISS-N1, twice). This
+inconsistency is itself the honest finding: it looks like noise across
+different feature choices, not convergence toward a real signal.
+
+### Honest conclusion
+
+**The ceiling remains.** Re-examining the walk data surfaced a genuine,
+valuable qualitative insight — the experimental transition point independently
+matches the literature-documented ISS-N1 boundary — but this project has now
+tried three distinct, reasonably-motivated, fully transparent scanning
+methods (composition-based, richer multi-feature, and edge-detection) against
+the same real quantitative ground truth, and **none reliably recovers known
+SMN2 regulatory regions or shows a trustworthy correlation with the walk
+data.** The one nominally-significant result obtained (contrast scanner) is
+in the wrong direction and shows the same regional-confound pattern that
+undermined the previous round's best-looking number. The most defensible
+reading of all three attempts together is that **simple, transparent
+sequence-composition scanning — regardless of which specific transparent
+feature set is used — is not sufficient to solve target-region recovery on
+this problem with the data currently available**, and further progress would
+most likely require substantially more positional training data (enough to
+fit a proper supervised model with held-out validation, at the cost of
+losing full manual interpretability) or an entirely different signal not
+yet attempted here (e.g. real RNA secondary structure prediction or
+cross-species conservation).

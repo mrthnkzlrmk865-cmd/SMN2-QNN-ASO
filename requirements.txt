@@ -1,0 +1,10 @@
+biopython
+qiskit
+qiskit-aer
+scikit-learn
+imbalanced-learn
+pandas
+numpy
+scipy
+matplotlib
+seaborn

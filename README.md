@@ -67,7 +67,7 @@ All models evaluated on an identical stratified 80/20 train/test split (test set
 See `figures/final_comparison.png` for the corresponding plot and
 `results/final_comparison.csv` for the raw numbers.
 
-![Final comparison](figures/final_comparison.png)
+![Final comparison](final_comparison.png)
 
 ### Qubit-count ablation (2 / 4 / 6 / 8 qubits)
 
@@ -83,8 +83,8 @@ an identical, class-balanced 100-sample training subset and evaluated on the sam
 | 6 (truncated) | 2 | 24 | 44.4% | 0.280 | 0.778 | 0.412 | 16.4s |
 | 8 (truncated) | 2 | 32 | 49.1% | 0.267 | 0.593 | 0.368 | 145.4s |
 
-![Qubit ablation comparison](figures/qubit_ablation_comparison.png)
-![Qubit ablation loss curves](figures/qubit_ablation_loss_curves.png)
+![Qubit ablation comparison](qubit_ablation_comparison.png)
+![Qubit ablation loss curves](qubit_ablation_loss_curves.png)
 
 F1 does not increase monotonically with qubit count — 6 qubits gives the best
 F1/training-time trade-off, and 8 qubits is ~9x slower than 6 for a *lower* F1.
@@ -99,14 +99,14 @@ matched feature count:
 
 | Qubits | Baseline F1 | SVM F1 | MLP F1 | QNN F1 |
 |---|---|---|---|---|
-| 2 | 0.000 | 0.339 | 0.400 ⚠️ | 0.417 |
+| 2 | 0.000 | 0.339 | 0.400  | 0.417 |
 | 4 | 0.000 | 0.250 | 0.371 | 0.362 |
 | 6 | 0.000 | 0.289 | 0.371 | 0.412 |
 | 8 | 0.000 | 0.296 | 0.320 | 0.368 |
 
-![Full comparison by qubit](figures/full_comparison_by_qubit.png)
+![Full comparison by qubit](full_comparison_by_qubit.png)
 
-⚠️ The 2-feature MLP result is degenerate (100% recall, 25% accuracy — it predicts
+ The 2-feature MLP result is degenerate (100% recall, 25% accuracy — it predicts
 "positive" for every sample) and should not be read as genuine skill. Excluding
 that cell, QNN is the top or joint-top F1 at every remaining qubit count on this
 particular split — but see the cross-validation result below before drawing any
@@ -125,7 +125,7 @@ apparent advantage holds up:
 | **MLP** | **0.391 ± 0.013** |
 | QNN | 0.337 ± 0.060 |
 
-![Cross-validation boxplot](figures/cross_validation_6qubit_boxplot.png)
+![Cross-validation boxplot](cross_validation_6qubit_boxplot.png)
 
 Under cross-validation, QNN's fold-to-fold standard deviation (0.060) is larger
 than its mean gap to MLP (0.054) — so the single-split "QNN wins" result above did
@@ -144,7 +144,7 @@ kept in its original, imbalanced form):
 | SMOTE | 0.388 | 0.395 | 0.341 |
 | Random Undersampling | 0.409 | 0.433 | 0.418 |
 
-![Balancing experiments comparison](figures/balancing_experiments_comparison.png)
+![Balancing experiments comparison](balancing_experiments_comparison.png)
 
 Balancing is critical for SVM/MLP (both are near-useless without it: SVM collapses
 to predicting the majority class every time) but far less important for the QNN,
@@ -153,7 +153,7 @@ gracefully under imbalance than a hard decision-boundary classifier.
 
 ---
 
-## Follow-up analysis (Professor Toshifumi Yokota's feedback)
+## Follow-up analysis 
 
 Three further experiments were run in response to external review, before any
 wet-lab or preprint steps were considered.
@@ -175,7 +175,7 @@ the feature *count* was matched (8 positions for every model), and the feature
 | PWM | 8nt (centered) | 86.1% | 0.731 | 0.704 | 0.717 |
 | MaxEnt-like | 22nt (full, reference) | 81.5% | 0.684 | 0.481 | 0.565 |
 
-![Fair comparison](figures/fair_comparison_matched_window.png)
+![Fair comparison](fair_comparison_matched_window.png)
 
 **Correcting feature location, not just feature count, closed most of the gap
 between classical ML and PWM** (SVM 0.375→0.600, MLP 0.269→0.690) — confirming
@@ -205,7 +205,7 @@ seen during training.
 | HBB | 84 (4) | 0.000 | 0.121 | 0.222 | 0.136 | 0.400 |
 | **Mean ± std** | | 0.000 | 0.513 ± 0.228 | 0.558 ± 0.191 | 0.319 ± 0.116 | **0.659 ± 0.149** |
 
-![Gene holdout comparison](figures/gene_holdout_comparison.png)
+![Gene holdout comparison](gene_holdout_comparison.png)
 
 PWM remains the strongest generalizer even when it has never seen a single window
 from the test gene, and QNN remains the weakest, consistent with the random-split
@@ -228,7 +228,7 @@ known biological activity, alongside constructed negative controls:
 | 5 | Nusinersen / ASO-10-27 (FDA-approved) | **active** | 0.629 |
 | 6 | 8-mer GC-core ASO (Singh et al. 2009 target region) | **active** | 0.386 |
 
-![Retrospective ASO validation](figures/retrospective_aso_validation.png)
+![Retrospective ASO validation](retrospective_aso_validation.png)
 
 **This is a negative result and it is the most important finding in this
 follow-up analysis.** The published, experimentally active ASOs — including
@@ -268,8 +268,8 @@ computed directly (`src/14_diagnose_scoring_failure.py`):
 | Thermodynamic "stability" | 0.611 | 0.882 | **−0.0813** | inverted |
 | Off-target term | 0.533 | 0.933 | **−0.0800** | inverted |
 
-![Scoring diagnosis distributions](figures/scoring_diagnosis_distributions.png)
-![Scoring diagnosis contributions](figures/scoring_diagnosis_contributions.png)
+![Scoring diagnosis distributions](scoring_diagnosis_distributions.png)
+![Scoring diagnosis contributions](scoring_diagnosis_contributions.png)
 
 Ranking by the QNN component *alone* actually separates active from control
 correctly (mean rank 2.0 vs 5.0 — the best possible outcome for 3-vs-3), but its
@@ -319,7 +319,7 @@ interpretable components:
 | 5 | ISS-N2-targeting ASO | control | 0.502 | 0.550 | 0.333 | 0.564 | 2 |
 | 6 | Off-target control | control | 0.497 | 0.389 | 0.000 | 0.533 | 1 |
 
-![Old vs new scoring](figures/aso_scoring_old_vs_new.png)
+![Old vs new scoring](aso_scoring_old_vs_new.png)
 
 **All three published active ASOs now rank above all three controls** — a
 complete reversal of the old system. Active mean rank = 2.00, control mean rank
@@ -411,7 +411,7 @@ Mann-Whitney p = 0.067 — the minimum achievable p-value at this sample size.
 
 ### Final holdout evaluation (run exactly once, no changes made afterward)
 
-![Holdout evaluation](figures/aso_holdout_evaluation.png)
+![Holdout evaluation](aso_holdout_evaluation.png)
 
 | Rank | ASO | Region | Label | Score |
 |---|---|---|---|---|
@@ -509,7 +509,7 @@ prioritization tool should surface).
 
 **Dev set (7 sequences) — evaluated first:**
 
-![Dev: old vs new off-target](figures/aso_dev_v2_vs_v3.png)
+![Dev: old vs new off-target](aso_dev_v2_vs_v3.png)
 
 | Rank | ASO | Region | Label | Score |
 |---|---|---|---|---|
@@ -528,7 +528,7 @@ penalized for its length.
 
 **Final holdout (5 sequences) — evaluated exactly once, no changes made after:**
 
-![Holdout: old vs new](figures/aso_holdout_v2_vs_v3.png)
+![Holdout: old vs new](aso_holdout_v2_vs_v3.png)
 
 | Rank | ASO | Region | Label | Score |
 |---|---|---|---|---|
@@ -711,7 +711,7 @@ degenerate motif (UAG) density + 0.3 × GC content, both literature-motivated
 and ISS6-KH). **No known region coordinates were given to the scanner** —
 weights were fixed a priori, not fit to the data.
 
-![Blind region scan](figures/blind_region_scan.png)
+![Blind region scan](blind_region_scan.png)
 
 ### Honest result: the simple scanner does not clearly recover known regions
 
@@ -727,7 +727,7 @@ background average.** Neither ISS+100 nor ISS-N2 stands out as a clear local
 maximum either (see figure: ISS-N2 sits at the tail of a peak that mostly
 falls just outside the labeled region).
 
-![Blind scan vs real effect](figures/blind_scan_vs_real_effect.png)
+![Blind scan vs real effect](blind_scan_vs_real_effect.png)
 
 Against the real quantitative ASO-walk ground truth, the blind score shows
 only a weak, **not statistically significant** correlation with measured
@@ -798,7 +798,7 @@ eval (n=18) gives Pearson r = 0.876, p < 0.001 — which looks like a strong
 success. It is not a valid measure of the scanner's real ability, and the
 scatter plot shows exactly why:
 
-![Old vs new scanner](figures/old_vs_richer_scan_comparison.png)
+![Old vs new scanner](old_vs_richer_scan_comparison.png)
 
 The two point clusters (blue = intron-6 dev points, orange = intron-7 eval
 points) sit at almost entirely separate score ranges (dev: 0.0–0.13; eval:
@@ -817,7 +817,7 @@ without this caveat would have been overclaiming.
 | ISS+100 | 59.8% | **87.8%** | **+1.20** |
 | ISS-N2 | 69.2% | 52.8% | +0.16 |
 
-![Richer scan profile](figures/richer_blind_region_scan.png)
+![Richer scan profile](richer_blind_region_scan.png)
 
 ISS+100 now sits on a clear local peak — the clearest recovery in either
 scanner version. ISS-N1 improved from below-background to modestly
@@ -934,7 +934,7 @@ never designed for them.
 
 ### Dev-set result (10 sequences: 6 active, 4 inactive)
 
-![Dev expanded](figures/aso_dev_evaluation_expanded.png)
+![Dev expanded](aso_dev_evaluation_expanded.png)
 
 | Rank | ASO | Region | Label | Score |
 |---|---|---|---|---|
@@ -968,7 +968,7 @@ Eteplirsen — it is the system having no real signal for it at all.
 
 ### Final holdout result (8 sequences: 4 active, 4 inactive) — run once
 
-![Holdout expanded](figures/aso_holdout_evaluation_expanded.png)
+![Holdout expanded](aso_holdout_evaluation_expanded.png)
 
 | Rank | ASO | Region | Label | Score |
 |---|---|---|---|---|
@@ -1084,7 +1084,7 @@ which is expected and reported plainly rather than left implicit.
 
 ### Final holdout result (run once, penalty value fixed beforehand)
 
-![Holdout position-aware](figures/position_aware_holdout_evaluation.png)
+![Holdout position-aware](position_aware_holdout_evaluation.png)
 
 | Rank | ASO | Region | Label | Score |
 |---|---|---|---|---|
@@ -1195,7 +1195,7 @@ fit to it as a regression target.
 | r (vs. real effect) | +0.213 | +0.370 | **−0.605** |
 | p-value | 0.396 | 0.327 | **0.008** |
 
-![Contrast scan vs walk](figures/contrast_scan_vs_walk.png)
+![Contrast scan vs walk](contrast_scan_vs_walk.png)
 
 The contrast scanner is the first to cross conventional significance — but
 with a **negative** correlation, the opposite of the hypothesis (higher
@@ -1215,7 +1215,7 @@ region is at genomic 32,091 — **30 nt away from the true ISS-N1 boundary**,
 not a match. And ISS-N1 itself now scores *below* background (14.9th
 percentile) — worse than either previous scanner attempt:
 
-![Contrast edge scan](figures/contrast_edge_scan.png)
+![Contrast edge scan](contrast_edge_scan.png)
 
 | Region | Old scanner | Richer scanner | Contrast scanner |
 |---|---|---|---|

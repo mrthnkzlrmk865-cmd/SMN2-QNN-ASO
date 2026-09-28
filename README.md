@@ -798,7 +798,7 @@ eval (n=18) gives Pearson r = 0.876, p < 0.001 — which looks like a strong
 success. It is not a valid measure of the scanner's real ability, and the
 scatter plot shows exactly why:
 
-![Old vs new scanner](figures/old_vs_richer_scan_comparison.png)
+![Old vs new scanner](old_vs_richer_scan_comparison.png)
 
 The two point clusters (blue = intron-6 dev points, orange = intron-7 eval
 points) sit at almost entirely separate score ranges (dev: 0.0–0.13; eval:

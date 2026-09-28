@@ -1,0 +1,86 @@
+ASO,Sequence,Region,Label,Source,Split,Gene,Activity_Detail
+Nusinersen / ASO-10-27 (=ASO IV),TCACTTTCATAATGCTGG,ISS-N1,active,"Maretina et al. 2023, Biomedicines 11:3071, Table 1 (ASO IV); originally Hua et al. 2008 Am J Hum Genet 82:834-848; FDA-approved (Spinraza).",dev,SMN2,active
+Anti-N1,ATTCACTTTCATAATGCTGG,ISS-N1,active,"Ottesen et al. 2021, PMC8395096; Singh et al. 2006 Mol Cell Biol 26:1333-1346.",holdout,SMN2,active
+3UP8,GCTGGCAG,ISS-N1-core,active,"Maretina et al. 2023, Table 1 (positive control); Singh et al. 2009 RNA Biol 6:341-350.",dev,SMN2,active
+F8,AATGCTGG,ISS-N1-core,inactive,"Maretina et al. 2023, Table 1 and Results 3.2 (used explicitly as negative control; ""negligible""/no positive splicing effect in the standard PS-2'OMe form).",holdout,SMN2,inactive
+ASO VII,TTCAACTTTCTAACATCTGA,ISS+100,active,"Maretina et al. 2023, Table 1 and Results 3.1 (""picked up ASO IV and ASO VII as oligonucleotides most efficiently restoring SMN2 splicing"").",holdout,SMN2,active
+SMA-657 (ASO 281-297),AAGTCTGCTGGTCTGCC,ISS-N2,active,"US Patent 9,856,474 (Singh/Iowa State); Singh et al. 2013 Nucleic Acids Res 41:8144-8165. Sequence derived as reverse complement of documented intron-7 target coordinates (not copied verbatim from a published nucleotide string).",dev,SMN2,active
+SMA-759 (ASO 281-300),AAAAAGTCTGCTGGTCTGCC,ISS-N2,active,"US Patent 9,856,474; same derivation method as SMA-657.",holdout,SMN2,active
+SMA-719 (ASO 281-295),GTCTGCTGGTCTGCC,ISS-N2,active,"US Patent 9,856,474; same derivation method as SMA-657.",dev,SMN2,active
+F14,TTTCATAATGCTGG,ISS-N1,active,"Singh et al. 2013 Nucleic Acids Res 41:8144-8165 (PMC3783185); Ottesen et al. 2011 PubMed 20413618. Sequesters first 14 nt of ISS-N1 (incl. 10C); ""F14 caused predominant exon 7 inclusion in all cases."" Sequence derived from documented intron-7 coordinates.",dev,SMN2,active
+L14,CTTTCATAATGCTG,ISS-N1,inactive,"Singh et al. 2013 Nucleic Acids Res 41:8144-8165 (PMC3783185); Ottesen et al. 2011 PubMed 20413618. Sequesters last 14 nt of ISS-N1 (excl. 10C); explicitly reported to INCREASE exon 7 skipping (""L14 caused the most dramatic increase in exon 7 skipping"") -- i.e. counter-therapeutic, a genuine negative example, not merely inert. Sequence derived from documented intron-7 coordinates.",holdout,SMN2,inactive
+ISIS 372641 (exon7 pos61),GATTTTGTCTAAAAC,exon7,inactive,"US Patent 8,946,183, Table 3 (endogenous SMN2 assay). Measured 6.4% exon-7 inclusion vs. 57.7% control -- strongly reduces inclusion, counter-therapeutic. Sequence derived as reverse complement of the documented target coordinates against our own genomic data.",dev,SMN2,inactive
+ISIS 372645 (exon7 pos81),TGAGCACCTTCCTTC,exon7,inactive,"US Patent 8,946,183, Table 3. Measured 7.8% exon-7 inclusion vs. 57.7% control. Sequence derived as above.",dev,SMN2,inactive
+ISIS 372647 (exon7 pos91),TTAAGGAATGTGAGC,exon7,inactive,"US Patent 8,946,183, Table 3. Measured 9.5% exon-7 inclusion vs. 57.7% control. Sequence derived as above.",holdout,SMN2,inactive
+Eteplirsen / AVI-4658 (DMD exon 51),CTCCAACATCAAGGAAGATGGCATTTCTAG,DMD-exon51,active,"US Patent (e.g. 10,875,880), Table 1, SEQ ID NO:1. FDA-approved (Exondys 51) for DMD exon-51 skipping. Different gene, different splice-modulation mechanism (exonic ESE/ESS masking rather than intronic silencer masking).",dev,DMD,active
+Golodirsen / SRP-4053 (DMD exon 53),GTTGCCTCCGGTTCTGAAGGTGTTC,DMD-exon53,active,"US Patent (e.g. 11,472,824), Table 1, SEQ ID NO:1. FDA-approved (Vyondys 53) for DMD exon-53 skipping.",holdout,DMD,active
+Scramble PMO control (DMD),CGGAACCCAGTCTGCCTAGCTAAAT,DMD-none,inactive,"Lim et al. 2018, Mol Ther Nucleic Acids (PMC6222172). Explicitly used as a scrambled negative control to assess non-sequence-specific PMO chemistry/procedure effects.",holdout,DMD,inactive
+Scrambled Nusinersen (constructed),GGTTATCCTCTAATTCGA,none,inactive,"Constructed for this study: same base composition as Nusinersen, order shuffled (seed=42). NOT from a publication.",dev,SMN2,inactive
+"Off-target control (constructed, exon 1 region)",GCACCCGCGGGTTTGCTA,none,inactive,"Constructed for this study: reverse complement of an SMN2 exon-1 genomic window, unrelated to any known splicing silencer. NOT from a publication.",dev,SMN2,inactive
+ASO-1,AGCCTCTATGGAGAACAG,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-2,GGCACAGCCTCTATGGAG,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-3,AAAATGGCACAGCCTCTA,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,counter_therapeutic
+ASO-4,AATGTAAAATGGCACAGC,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-5,GTGGGAATGTAAAATGGC,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-6,TGTTGGTGGGAATGTAAA,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-7,TGCCCTGTTGGTGGGAAT,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-8,CCTTGTGCCCTGTTGGTG,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-9,GGAACCCTTGTGCCCTGT,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-10,AAACTGGAACCCTTGTGC,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-11,TGGAGAAACTGGAACCCT,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,weak
+ASO-12,GTATGTGGAGAAACTGGA,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,weak
+ASO-13,GGTAAGTATGTGGAGAAA,BIM-Intron2,active,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,active
+ASO-14,GTGTTGGTAAGTATGTGG,BIM-Intron2,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-15,ATGACTACTGTTAAAAAA,BIM-E3,active,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,active
+ASO-16,CTAGGATGACTACTGTTA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-17,ATCCTCTAGGATGACTAC,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-18,CCTATATCCTCTAGGATG,BIM-E3,active,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,active
+ASO-19,GATCACCTATATCCTCTA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-20,TGAAAGATCACCTATATC,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-21,CACAGTGAAAGATCACCT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-22,CAAAGCACAGTGAAAGAT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-23,AAATCCAAAGCACAGTGA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-24,AATATAAATCCAAAGCAC,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-25,CAGTAAATATAAATCCAA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-26,TAAGCCAGTAAATATAAA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-27,AAATCTAAGCCAGTAAAT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-28,CATACAAATCTAAGCCAG,BIM-E3,active,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,active
+ASO-29,GTGGCCATACAAATCTAA,BIM-E3,active,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,active
+ASO-30,TGGTGGTGGCCATACAAA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-31,GACTATGGTGGTGGCCAT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-32,ATCTTGACTATGGTGGTG,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-33,TCTGTATCTTGACTATGG,BIM-E3,active,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,active
+ASO-34,GTTGTTCTGTATCTTGAC,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,weak
+ASO-35,GTTGAGTTGTTCTGTATC,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,weak
+ASO-36,TTGTGGTTGAGTTGTTCT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,weak
+ASO-37,AATCCTTGTGGTTGAGTT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,weak
+ASO-38,TGAGAAATCCTTGTGGTT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,weak
+ASO-39,TATCATGAGAAATCCTTG,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,weak
+ASO-40,AAAGGTATCATGAGAAAT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-41,TATAAAAAGGTATCATGA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-42,GTGGCTATAAAAAGGTAT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,counter_therapeutic
+ASO-43,TGGCTGTGGCTATAAAAA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-44,AGAGGTGGCTGTGGCTAT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-45,GGGAGAGAGGTGGCTGTG,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-46,GAAGAGGGAGAGAGGTGG,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-47,TCAAGGAAGAGGGAGAGA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-48,AATGCTCAAGGAAGAGGG,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-49,GACAAAATGCTCAAGGAA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-50,CATATGACAAAATGCTCA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-51,ATGACCATATGACAAAAT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-52,CACCAATGACCATATGAC,BIM-E3,active,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,active
+ASO-53,TTAATCACCAATGACCAT,BIM-E3,active,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,active
+ASO-54,TTTATTTAATCACCAATG,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-55,TACATTTTATTTAATCAC,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-56,TAAAATACATTTTATTTA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-57,AATATTAAAATACATTTT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-58,AAGTCAATATTAAAATAC,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-59,AGAGAAAGTCAATATTAA,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-60,GAAACAGAGAAAGTCAAT,BIM-E3,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-61,AGAAAGAAACAGAGAAAG,BIM-downstream,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-62,AAGGTAGAAAGAAACAGA,BIM-downstream,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-63,TTAAAAAGGTAGAAAGAA,BIM-downstream,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,neutral_or_other
+ASO-64,CATGTTTAAAAAGGTAGA,BIM-downstream,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,counter_therapeutic
+ASO-65,GTAGCCATGTTTAAAAAG,BIM-downstream,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,counter_therapeutic
+ASO-66,TTCTAGTAGCCATGTTTA,BIM-downstream,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",holdout,BIM,neutral_or_other
+ASO-67,CATTTTTCTAGTAGCCAT,BIM-downstream,inactive,"Liu et al. 2017, Oncotarget 8:77567-77585 (PMC5652800), Supplementary Table 1",dev,BIM,counter_therapeutic

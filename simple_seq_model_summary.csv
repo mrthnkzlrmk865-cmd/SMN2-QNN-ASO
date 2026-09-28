@@ -1,0 +1,10 @@
+Split,Model,Accuracy,Precision,Recall,F1,AUC
+split_A_SMN2DMD_to_BIM,LogisticRegression,82.1,0.0,0.0,0.0,0.443
+split_A_SMN2DMD_to_BIM,LinearSVM,82.1,0.0,0.0,0.0,0.441
+split_A_SMN2DMD_to_BIM,SmallMLP,43.3,0.059,0.25,0.095,0.362
+split_A_SMN2DMD_to_BIM,MajorityBaseline,11.9,0.119,1.0,0.213,
+split_B_within_BIM,LogisticRegression,78.8,0.167,0.333,0.222,0.667
+split_B_within_BIM,LinearSVM,78.8,0.167,0.333,0.222,0.656
+split_B_within_BIM,SmallMLP,81.8,0.286,0.667,0.4,0.644
+split_B_within_BIM,MajorityBaseline,90.9,0.0,0.0,0.0,
+split_B_within_BIM,PositionOneHot_LR,84.8,0.25,0.333,0.286,0.522
